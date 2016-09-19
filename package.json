@@ -1,0 +1,23 @@
+{
+  "name": "price-estimation-tool",
+  "version": "1.0.0",
+  "description": "A tool to help a company calculate the markup on a base price, based on certain specific rules",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kallaway/price-estimation-tool.git"
+  },
+  "author": "kallaway",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kallaway/price-estimation-tool/issues"
+  },
+  "homepage": "https://github.com/Kallaway/price-estimation-tool#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2"
+  }
+}
