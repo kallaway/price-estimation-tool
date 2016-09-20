@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 
 describe('convertPercentToDecimal', function() {
-	// is this needed?
+	// args: percent
 	it('should return a number', function() { // check?
 		expect(convertPercentToDecimal(10).to.be.a('number'));
 	});
@@ -12,5 +12,20 @@ describe('convertPercentToDecimal', function() {
 
 	it('should calculate the value correctly', function() {
 		expect(convertPercentToDecimal(5)).to.equal(0.05);
+	});
+});
+
+
+describe('convertMarkupRulesToDecimals', function() {
+
+});
+
+describe('getMarkupRates', function() {
+	it('should return an object', function() {
+		expect(getMarkupRates()).to.be.an('object');
+	});
+
+	it('should return an object that is not empty', function() {
+		expect(getMarkupRates()).to.not.be.empty;
 	});
 });

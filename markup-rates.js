@@ -12,6 +12,12 @@ var markupPercentages = { // rename this
 	}
 }
 
+var rates = {};
+
+function convertMarkupRulesToDecimals() {
+
+}
+
 function convertPercentToDecimal(percent) { // change to percentToDecimal?
 
 }
@@ -19,3 +25,7 @@ function convertPercentToDecimal(percent) { // change to percentToDecimal?
 function getMarkupRates() {
 
 }
+
+module.exports.convertPercentToDecimal = convertPercentToDecimal;
+module.exports.getMarkupRates = getMarkupRates;
+module.exports.convertMarkupRulesToDecimals = convertMarkupRulesToDecimals;
