@@ -46,7 +46,7 @@ function convertMarkupRulesToDecimals(originalRates) {
 }
 
 function convertPercentToDecimal(percent) { // check this
-	return percent * 0.01;
+	return inferNumber(percent) * 0.01;
 }
 
 function getMarkupRates() {

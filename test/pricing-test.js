@@ -24,7 +24,7 @@ describe('getLabourCost', function() {
 	});
 
 	it('should calculate the value correctly', function() {
-		expect(getLabourCost(examplePrice, exampleLabourRate, examplePeopleNums)).to.equal(1000);
+		expect(getLabourCost(examplePrice, exampleLabourRate, examplePeopleNum)).to.equal(1000);
 	});
 
 	it('should round to two decimal places to represent cents', function() {
@@ -51,7 +51,7 @@ describe('getSinglePersonLabourCost', function() {
 	});
 
 	it('should round the answer off to 2 decimal places', function() {
-		expect(getSinglePersonLabourCost(3456, 0.015)).to.equal(549.62);
+		expect(getSinglePersonLabourCost(3456, 0.015)).to.equal(51.84);
 		var resultHundred = getSinglePersonLabourCost(34567, 0.0159) * 100;
 		var difference = resultHundred - Math.round(resultHundred);
 		expect(difference).to.equal(0);
@@ -122,6 +122,10 @@ describe('convertBaseIntoNumber', function() {
 	it('should return a number with 2 decimal places', function() {
 		expect(convertBaseIntoNumber('$2500.75')).to.equal(2500.75);
 	});
+
+	it('should return 0 if the number cannot be inferred', function() {
+		expect(convertBaseIntoNumber('$%^&')).to.equal(0);
+	});
 });
 
 // OK
@@ -160,12 +164,12 @@ describe('findProductTypeRate', function() {
 	});
 
 	it('should return the right rate from the info object', function() {
-		expect(findProductTypeRate(exampleCategories, 'electronics').to.equal(0.05));
+		expect(findProductTypeRate(exampleCategories, 'electronics')).to.equal(0.05);
 	});
 
 	it('should return "other" rate for anything other than the specified rules', function() {
-		expect(findProductTypeRate(exampleCategories, 'vehicle').to.equal(0.02));
-		expect(findProductTypeRate(exampleCategories, 'sand').to.equal(0.02));
+		expect(findProductTypeRate(exampleCategories, 'vehicle')).to.equal(0.02);
+		expect(findProductTypeRate(exampleCategories, 'sand')).to.equal(0.02);
 	});
 
 });

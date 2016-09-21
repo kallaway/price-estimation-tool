@@ -35,10 +35,19 @@ function estimatePrice(base, people, productType) {
 }
 
 function convertBaseIntoNumber(base) {
-	var numString = base[0] === "$" ? base.substring(1) : base;
-	var num = parseFloat(numString);
+	if (typeof base === 'number') {
+		return base;
+	}
 
-	return num;
+	var numString = base[0] === "$" ? base.substring(1) : base;
+	var numAttempt = parseFloat(numString);
+
+	if (isNaN(numAttempt)) {
+		console.log("Please check the base price you're entering. Couldn't infer the right number, and assumed it to be 0 until fixed.");
+		return 0;
+	}
+
+	return numAttempt;
 }
 
 function convertPeopleInfoIntoNumber(numPeople) {
@@ -50,7 +59,7 @@ function convertPeopleInfoIntoNumber(numPeople) {
 }
 
 function findProductTypeRate(categories, productType) {
-	if (categories[productType] === undefined) {
+	if (categories[productType] === undefined || productType === 'other') {
 		return categories.other;
 	}
 	return categories[productType];

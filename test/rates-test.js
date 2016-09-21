@@ -5,11 +5,11 @@ describe('convertPercentToDecimal', function() {
 	// args: percent
 	var convertPercentToDecimal = ratesFunctions.convertPercentToDecimal;
 	it('should return a number', function() { // check?
-		expect(convertPercentToDecimal(10).to.be.a('number'));
+		expect(convertPercentToDecimal(10)).to.be.a('number');
 	});
 
 	it('should be able to work even if given the number in a string', function() {
-		expect(convertPercentToDecimal('3').to.equal(0.03));
+		expect(convertPercentToDecimal('3')).to.equal(0.03);
 	});
 
 	it('should calculate the value correctly', function() {
@@ -45,6 +45,8 @@ describe('convertMarkupRulesToDecimals', function() {
 		expect(convertMarkupRulesToDecimals(exampleRates).perPersonMarkup).to.equal(0.025);
 		expect(convertMarkupRulesToDecimals(exampleRates).byCategory.food).to.equal(0.1);
 	});
+
+	// it('should convert values to ')
 });
 
 describe('getMarkupRates', function() {
