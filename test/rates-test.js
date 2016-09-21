@@ -17,7 +17,30 @@ describe('convertPercentToDecimal', function() {
 
 
 describe('convertMarkupRulesToDecimals', function() {
+	var exampleRates = {
+		flatMarkup: 3,
+		perPersonMarkup: 2.5,
+		byCategory: {
+			'food': 10,
+			'electronics': 5,
+			'drugs': 12,
+			'other': 3
+		}
+	}
 
+	it('should return an object', function() {
+		expect(convertMarkupRulesToDecimals(exampleRates)).to.be.an('object');
+	});
+
+	it('the object should not be empty', function() {
+		expect(convertMarkupRulesToDecimals(exampleRates)).to.not.be.empty;
+	});
+
+	it('should correctly calculate internal decimal representation of each rate', function() {
+		expect(convertMarkupRulesToDecimals(exampleRates).flatMarkup).to.equal(0.03);
+		expect(convertMarkupRulesToDecimals(exampleRates).perPersonMarkup).to.equal(0.025);
+		expect(convertMarkupRulesToDecimals(exampleRates).byCategory.food).to.equal(0.1);
+	});
 });
 
 describe('getMarkupRates', function() {

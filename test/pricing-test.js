@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var rates = require('markup-rates.js').rates;
+var rates = require('../markup-rates.js').rates;
 var priceEstimation = require('../price-estimate.js');
 
 describe('sanity check - test mocha', function() {
@@ -28,9 +28,34 @@ describe('getLabourCost', function() {
 	});
 
 	it('should round to two decimal numbers to represent cents', function() {
-		expect(getLabourCost(8132, 0.019, 4)) // fix this
+		// the off cent is accounted for by getSinglePersonLabourCost function
+		expect(getLabourCost(8132, 0.019, 4)).to.equal(618.04);
+		var resultHundred = getLabourCost(8132, 0.019, 4) * 100;
+		var difference = resultHundred - Math.round(resultHundred);
+		expect(difference).to.equal(0);
 	});
 
+});
+
+describe('getSinglePersonLabourCost', function() {
+	var getSinglePersonLabourCost = priceEstimation.getSinglePersonLabourCost;
+	var priceExample = 10000;
+	var rateExample = 0.02;
+
+	it('should return a number', function() {
+		expect(getSinglePersonLabourCost(priceExample, rateExample)).to.be.a('number');
+	});
+
+	it('should perform a correct calculation', function() {
+		expect(getSinglePersonLabourCost(priceExample, rateExample)).to.equal(200);
+	});
+
+	it('should round the answer off to 2 decimal numbers', function() {
+		expect(getSinglePersonLabourCost(3456, 0.015)).to.equal(549.62);
+		var resultHundred = getSinglePersonLabourCost(34567, 0.0159) * 100;
+		var difference = resultHundred - Math.round(resultHundred);
+		expect(difference).to.equal(0);
+	})
 });
 
 // OK
@@ -45,6 +70,9 @@ describe('getFlatMarkup', function() {
 
 	it('should round to two decimal points to represent cents', function() { // ?
 		expect(getFlatMarkup(21451.30, exampleFlatMarkup)).to.equal(1823.36);
+		var resultHundred = getFlatMarkup(21451.30, exampleFlatMarkup) * 100;
+		var difference = resultHundred - Math.round(resultHundred);
+		expect(difference).to.equal(0);
 	});
 
 	it('should calculate the result correctly based on a given markup rate', function() {
@@ -60,15 +88,18 @@ describe('getProductTypeMarkup', function() {
 	var exampleProductRate = 0.03;
 
 	it('should be a number', function() {
-		expect(getFlatMarkup(examplePrice, exampleProductRate)).to.be.a('number');
+		expect(getProductTypeMarkup(examplePrice, exampleProductRate)).to.be.a('number');
 	});
 
 	it('should calculate the value correctly', function() {
-		expect(getFlatMarkup(1000, 0.01)).to.equal(10);
+		expect(getProductTypeMarkup(1000, 0.01)).to.equal(10);
 	});
 
 	it('should round the answer to 2 decimal points to represent cents', function() {
-		expect(999, 0.0132).to.equal(13.19);
+		expect(getProductTypeMarkup(999, 0.0132)).to.equal(13.19);
+		var resultHundred = getProductTypeMarkup(999, 0.0132) * 100;
+		var difference = resultHundred - Math.round(resultHundred);
+		expect(difference).to.equal(0);
 	});
 
 });
@@ -161,7 +192,12 @@ describe('estimatePrice', function() {
 	// extra checks
 	it('should format the result as currency', function() {
 		expect(estimatePrice('3000', '3 people', 'food')[0]).to.equal('$');
-		// expect(estimatePrice(5000, )).
+	});
+
+	it('should be rounded to 2 decimal points', function() {
+		var decimalPart = estimatePrice(baseExample, peopleExample, productType);
+		decimalPart = decimalPart.substring(decimalPart.indexOf('.'));
+		expect(decimalPart.length).to.equal(2);
 	});
 
 	it('should return a string', function() {
