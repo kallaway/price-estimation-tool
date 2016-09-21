@@ -1,7 +1,9 @@
 var expect = require('chai').expect;
+var ratesFunctions = require('../markup-rates.js');
 
 describe('convertPercentToDecimal', function() {
 	// args: percent
+	var convertPercentToDecimal = ratesFunctions.convertPercentToDecimal;
 	it('should return a number', function() { // check?
 		expect(convertPercentToDecimal(10).to.be.a('number'));
 	});
@@ -17,6 +19,8 @@ describe('convertPercentToDecimal', function() {
 
 
 describe('convertMarkupRulesToDecimals', function() {
+	var convertMarkupRulesToDecimals = ratesFunctions.convertMarkupRulesToDecimals;
+
 	var exampleRates = {
 		flatMarkup: 3,
 		perPersonMarkup: 2.5,
@@ -44,11 +48,25 @@ describe('convertMarkupRulesToDecimals', function() {
 });
 
 describe('getMarkupRates', function() {
+	var getMarkupRates = ratesFunctions.getMarkupRates;
+
 	it('should return an object', function() {
 		expect(getMarkupRates()).to.be.an('object');
 	});
 
 	it('should return an object that is not empty', function() {
 		expect(getMarkupRates()).to.not.be.empty;
+	});
+});
+
+describe('rates', function() {
+	var rates = ratesFunctions.rates;
+
+	it('should be an object', function() {
+		expect(rates).to.be.an('object');
+	});
+
+	it('should not be empty', function() {
+		expect(rates).to.not.be.empty;
 	});
 });

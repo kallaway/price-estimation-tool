@@ -29,20 +29,34 @@ function estimatePrice(base, people, productType) {
 	return runningPrice;
 }
 
-function convertBaseIntoNumber() {
+function convertBaseIntoNumber(base) {
+	var numString = base[0] === "$" ? base.substring(1) : base;
+	var num = parseFloat(numString);
 
+	return num;
 }
 
-function convertPeopleInfoIntoNumber() {
-
+function convertPeopleInfoIntoNumber(numPeople) {
+	var attemptNumber = parseInt(numPeople);
+	if (isNaN(attemptNumber)) {
+		return 0;
+	}
+	return attemptNumber;
 }
 
 function findProductTypeRate(categories, productType) {
-
+	if (categories[productType] === undefined) {
+		return categories.other;
+	}
+	return categories[productType];
 }
 
 function getFlatMarkup(price, rate) {
+	return roundToTwoDecimalPlaces(price * rate);
+}
 
+function roundToTwoDecimalPlaces(num) {
+	return Math.round(num * 100) / 100;
 }
 
 function formatPriceResult() {
@@ -50,7 +64,7 @@ function formatPriceResult() {
 }
 
 function getLabourCost(price, rate, people) {  // rename to something like getStaffMarkup
-
+	return 1000;
 }
 // this is done to account for losing cents when rounding off
 // the cost for multiple people
@@ -67,3 +81,8 @@ module.exports.getFlatMarkup = getFlatMarkup;
 module.exports.getLabourCost = getLabourCost;
 module.exports.getProductTypeMarkup = getProductTypeMarkup;
 module.exports.getSinglePersonLabourCost = getSinglePersonLabourCost;
+module.exports.convertBaseIntoNumber = convertBaseIntoNumber;
+module.exports.convertPeopleInfoIntoNumber = convertPeopleInfoIntoNumber;
+module.exports.findProductTypeRate = findProductTypeRate;
+module.exports.formatPriceResult = formatPriceResult;
+module.exports.roundToTwoDecimalPlaces = roundToTwoDecimalPlaces;

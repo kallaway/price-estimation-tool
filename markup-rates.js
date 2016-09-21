@@ -12,18 +12,33 @@ var markupPercentages = { // rename this
 	}
 }
 
-var rates = {};
+var rates = convertMarkupRulesToDecimals(markupPercentages);
 
-function convertMarkupRulesToDecimals(percentRates) {
+function convertMarkupRulesToDecimals(originalRates) {
+	var decimalRates = {};
 
+	decimalRates.flatMarkup = convertPercentToDecimal(originalRates.flatMarkup);
+	decimalRates.perPersonMarkup = convertPercentToDecimal(originalRates.perPersonMarkup);
+	decimalRates.byCategory = {};
+
+	var categories = originalRates.byCategory;
+
+	for (var category in categories) {
+    if (categories.hasOwnProperty(category)) {
+		decimalRates.byCategory[category] = convertPercentToDecimal(categories[category]);
+    }
+}
+	// console.log(markupPercentages);
+	// console.log(decimalRates);
+	return decimalRates;
 }
 
-function convertPercentToDecimal(percent) { // change to percentToDecimal?
-
+function convertPercentToDecimal(percent) { // check this
+	return percent * 0.01;
 }
 
 function getMarkupRates() {
-
+	return rates;
 }
 
 module.exports.convertPercentToDecimal = convertPercentToDecimal;

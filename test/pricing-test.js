@@ -27,7 +27,7 @@ describe('getLabourCost', function() {
 		expect(getLabourCost(examplePrice, exampleLabourRate, examplePeopleNums)).to.equal(1000);
 	});
 
-	it('should round to two decimal numbers to represent cents', function() {
+	it('should round to two decimal places to represent cents', function() {
 		// the off cent is accounted for by getSinglePersonLabourCost function
 		expect(getLabourCost(8132, 0.019, 4)).to.equal(618.04);
 		var resultHundred = getLabourCost(8132, 0.019, 4) * 100;
@@ -50,7 +50,7 @@ describe('getSinglePersonLabourCost', function() {
 		expect(getSinglePersonLabourCost(priceExample, rateExample)).to.equal(200);
 	});
 
-	it('should round the answer off to 2 decimal numbers', function() {
+	it('should round the answer off to 2 decimal places', function() {
 		expect(getSinglePersonLabourCost(3456, 0.015)).to.equal(549.62);
 		var resultHundred = getSinglePersonLabourCost(34567, 0.0159) * 100;
 		var difference = resultHundred - Math.round(resultHundred);
@@ -60,7 +60,7 @@ describe('getSinglePersonLabourCost', function() {
 
 // OK
 describe('getFlatMarkup', function() {
-	var getFlarMarkup = priceEstimation.getFlatMarkup;
+	var getFlatMarkup = priceEstimation.getFlatMarkup;
 	// args: price, rate
 	var exampleFlatMarkup = 0.085;
 
@@ -68,7 +68,7 @@ describe('getFlatMarkup', function() {
 		expect(getFlatMarkup(5000, exampleFlatMarkup)).to.be.a('number');
 	});
 
-	it('should round to two decimal points to represent cents', function() { // ?
+	it('should round to two decimal places to represent cents', function() { // ?
 		expect(getFlatMarkup(21451.30, exampleFlatMarkup)).to.equal(1823.36);
 		var resultHundred = getFlatMarkup(21451.30, exampleFlatMarkup) * 100;
 		var difference = resultHundred - Math.round(resultHundred);
@@ -95,7 +95,7 @@ describe('getProductTypeMarkup', function() {
 		expect(getProductTypeMarkup(1000, 0.01)).to.equal(10);
 	});
 
-	it('should round the answer to 2 decimal points to represent cents', function() {
+	it('should round the answer to 2 decimal places to represent cents', function() {
 		expect(getProductTypeMarkup(999, 0.0132)).to.equal(13.19);
 		var resultHundred = getProductTypeMarkup(999, 0.0132) * 100;
 		var difference = resultHundred - Math.round(resultHundred);
@@ -113,10 +113,14 @@ describe('convertBaseIntoNumber', function() {
 	});
 
 	it('should infer the corect base price from given info', function() {
-		expect(convertPeopleInfoIntoNumber('$3500.50')).to.equal(3500.50);
-		expect(convertPeopleInfoIntoNumber('$5000')).to.equal(5000);
-		expect(convertPeopleInfoIntoNumber(2500)).to.equal(2500);
-		expect(convertPeopleInfoIntoNumber(700.95)).to.equal(700.95);
+		expect(convertBaseIntoNumber('$3500.50')).to.equal(3500.50);
+		expect(convertBaseIntoNumber('$5000')).to.equal(5000);
+		expect(convertBaseIntoNumber(2500)).to.equal(2500);
+		expect(convertBaseIntoNumber(700.95)).to.equal(700.95);
+	});
+
+	it('should return a number with 2 decimal places', function() {
+		expect(convertBaseIntoNumber('$2500.75')).to.equal(2500.75);
 	});
 });
 
@@ -178,7 +182,7 @@ describe('formatPriceResult', function() {
 		expect(formatPriceResult(2500.75)[0]).to.equal('$');
 	});
 
-	it('should have cents as 2 decimal points for the cases when there are 0 cents', function() {
+	it('should have cents as 2 decimal places for the cases when there are 0 cents', function() {
 		expect(formatPriceResult(3000)).to.equal('$3000.00');
 	});
 });
@@ -194,7 +198,7 @@ describe('estimatePrice', function() {
 		expect(estimatePrice('3000', '3 people', 'food')[0]).to.equal('$');
 	});
 
-	it('should be rounded to 2 decimal points', function() {
+	it('should be rounded to 2 decimal places', function() {
 		var decimalPart = estimatePrice(baseExample, peopleExample, productType);
 		decimalPart = decimalPart.substring(decimalPart.indexOf('.'));
 		expect(decimalPart.length).to.equal(2);
@@ -213,4 +217,18 @@ describe('estimatePrice', function() {
 	});
 
 
+});
+
+describe('roundToTwoDecimalPlaces', function() {
+	var roundToTwoDecimalPlaces = priceEstimation.roundToTwoDecimalPlaces;
+
+	it('should return a number', function() {
+		expect(roundToTwoDecimalPlaces(1234.567)).to.be.a('number');
+	});
+
+	it('should be rounded at two decimal places', function() {
+		expect(roundToTwoDecimalPlaces(34.582)).to.equal(34.58);
+		expect(roundToTwoDecimalPlaces(19.522)).to.equal(19.52);
+		expect(roundToTwoDecimalPlaces(33.555)).to.equal(33.56);
+	});
 });
