@@ -18,15 +18,20 @@ function estimatePrice(base, people, productType) {
 
 	// add flat markup
 	runningPrice += flatMarkup;
+	console.log("*** RUNNING PRICE 1 IS " + runningPrice);
 
 	runningPrice += getLabourCost(priceWithFlat);
+	console.log("*** RUNNING PRICE 2 IS " + runningPrice);
 
 	runningPrice += getProductTypeMarkup(priceWithFlat, productRate);
+	console.log("*** RUNNING PRICE 3 IS " + runningPrice);
 
 	// 3. Format the result and return it
+	var finalPrice = formatPriceResult(runningPrice);
+	console.log("*** FINAL PRICE IS " + finalPrice);
 
 	// before returning there should be a function to make it back into a string
-	return runningPrice;
+	return finalPrice;
 }
 
 function convertBaseIntoNumber(base) {
@@ -52,29 +57,37 @@ function findProductTypeRate(categories, productType) {
 }
 
 function getFlatMarkup(price, rate) {
-	return roundToTwoDecimalPlaces(price * rate);
+	var flatMarkup = price * rate;
+	return roundToTwoDecimalPlaces(flatMarkup);
 }
 
 function roundToTwoDecimalPlaces(num) {
 	return Math.round(num * 100) / 100;
 }
 
-function formatPriceResult() {
-
+function formatPriceResult(num) {
+	var numDecimalPart = num - Math.round(num);
+	var formatDecimalsForWhole = numDecimalPart === 0 ? ".00" : "";
+	return '$' + roundToTwoDecimalPlaces(num) + formatDecimalsForWhole;
 }
 
-function getLabourCost(price, rate, people) {  // rename to something like getStaffMarkup
-	return 1000;
+function getLabourCost(priceWithBase, rate, numPeople) {  // rename to something like getStaffMarkup
+	var singlePerson = getSinglePersonLabourCost(priceWithBase, rate);
+	return singlePerson * numPeople;
 }
 // this is done to account for losing cents when rounding off
 // the cost for multiple people
 function getSinglePersonLabourCost(price, rate) {
-
+	var singlePersonMarkup = price * rate;
+	return roundToTwoDecimalPlaces(singlePersonMarkup);
 }
 
-function getProductTypeMarkup(price, productRate) {
-
+function getProductTypeMarkup(priceWithBase, productRate) {
+	var productMarkup = priceWithBase * productRate;
+	return roundToTwoDecimalPlaces(productMarkup);
 }
+
+
 
 module.exports.estimatePrice = estimatePrice;
 module.exports.getFlatMarkup = getFlatMarkup;

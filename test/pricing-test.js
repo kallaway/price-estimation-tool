@@ -188,6 +188,7 @@ describe('formatPriceResult', function() {
 });
 
 describe('estimatePrice', function() {
+	var estimatePrice = priceEstimation.estimatePrice; // well :)
 	// args: base, people, productType
 	var baseExample = '$5000.00';
 	var peopleExample = '4 people';

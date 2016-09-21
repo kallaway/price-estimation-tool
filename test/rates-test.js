@@ -70,3 +70,22 @@ describe('rates', function() {
 		expect(rates).to.not.be.empty;
 	});
 });
+
+describe('inferNumber', function() {
+	var inferNumber = ratesFunctions.inferNumber;
+
+	it('should return a number', function() {
+		expect(inferNumber('333')).to.be.a('number');
+	});
+
+	it('should return a correct number', function() {
+		expect(inferNumber('333')).to.equal(333);
+		expect(inferNumber('123.34')).to.equal(123.34);
+		expect(inferNumber('0.05')).to.equal(0.05);
+	});
+
+	it('should return a number if given a number', function() {
+		expect(inferNumber(0.03)).to.equal(0.03);
+		expect(inferNumber(50)).to.be.a('number');
+	});
+});

@@ -14,6 +14,18 @@ var markupPercentages = { // rename this
 
 var rates = convertMarkupRulesToDecimals(markupPercentages);
 
+function inferNumber(potentialNum) {
+	var numAttempt = parseFloat(potentialNum);
+	if (typeof potentialNum === 'number') {
+		return potentialNum;
+	} else if (isNaN(numAttempt)) {
+		console.log("Please check the rates given in the markupPercentages - can't read one of the rates as a number. For now, it is assumed to be 0");
+		return 0
+	} else {
+		return numAttempt;
+	}
+}
+
 function convertMarkupRulesToDecimals(originalRates) {
 	var decimalRates = {};
 
@@ -45,3 +57,4 @@ module.exports.convertPercentToDecimal = convertPercentToDecimal;
 module.exports.getMarkupRates = getMarkupRates;
 module.exports.convertMarkupRulesToDecimals = convertMarkupRulesToDecimals;
 module.exports.rates = rates;
+module.exports.inferNumber = inferNumber;
