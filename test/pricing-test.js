@@ -8,7 +8,6 @@ describe('sanity check - test mocha', function() {
 	});
 });
 
-
 // function to calculate price with base markup
 describe('getLabourCost', function() {
 	var getLabourCost = priceEstimation.getLabourCost;
@@ -29,7 +28,7 @@ describe('getLabourCost', function() {
 
 	it('should round to two decimal places to represent cents', function() {
 		// the off cent is accounted for by getSinglePersonLabourCost function
-		expect(getLabourCost(8132, 0.019, 4)).to.equal(618.04);
+		expect(getLabourCost(8132, 0.019, 4)).to.equal(618.03);
 		var resultHundred = getLabourCost(8132, 0.019, 4) * 100;
 		var difference = resultHundred - Math.round(resultHundred);
 		expect(difference).to.equal(0);
@@ -126,6 +125,10 @@ describe('convertBaseIntoNumber', function() {
 	it('should return 0 if the number cannot be inferred', function() {
 		expect(convertBaseIntoNumber('$%^&')).to.equal(0);
 	});
+
+	it('should get rid of commas when it runs', function() {
+		expect(convertBaseIntoNumber('$5,400.00')).to.equal(5400);
+	});
 });
 
 // OK
@@ -160,7 +163,9 @@ describe('findProductTypeRate', function() {
 	};
 
 	it('should return a number', function() {
-		expect(findProductTypeRate(exampleCategories, 'food')).to.be.a('number')
+		expect(findProductTypeRate(exampleCategories, 'food')).to.be.a('number');
+		expect(findProductTypeRate(exampleCategories, 'other')).to.be.a('number');
+		expect(findProductTypeRate(exampleCategories, 'abc')).to.be.a('number');
 	});
 
 	it('should return the right rate from the info object', function() {
@@ -187,7 +192,7 @@ describe('formatPriceResult', function() {
 	});
 
 	it('should have cents as 2 decimal places for the cases when there are 0 cents', function() {
-		expect(formatPriceResult(3000)).to.equal('$3000.00');
+		expect(formatPriceResult(3000)).to.equal('$3,000.00');
 	});
 });
 
@@ -204,17 +209,16 @@ describe('estimatePrice', function() {
 	});
 
 	it('should be rounded to 2 decimal places', function() {
-		var decimalPart = estimatePrice(baseExample, peopleExample, productType);
-		decimalPart = decimalPart.substring(decimalPart.indexOf('.'));
+		var priceValue = estimatePrice(baseExample, peopleExample, productType);
+		decimalPart = priceValue.substring(priceValue.indexOf('.'));
 		expect(decimalPart.length).to.equal(2);
 	});
 
 	it('should return a string', function() {
-		expect(estimatePrice()).to.be.a('string');
+		expect(estimatePrice(baseExample, peopleExample, productType)).to.be.a('string');
 	});
 
 	// Test cases given:
-
 	it('should return the right price for examples given in the problem description', function() {
 		expect(estimatePrice('$1,299.99', '3 people', 'food')).to.equal('$1,591.58');
 		expect(estimatePrice('$5,432.00', '1 person', 'drugs')).to.equal('$6,199.81');
@@ -236,4 +240,34 @@ describe('roundToTwoDecimalPlaces', function() {
 		expect(roundToTwoDecimalPlaces(19.522)).to.equal(19.52);
 		expect(roundToTwoDecimalPlaces(33.555)).to.equal(33.56);
 	});
+
+
+});
+
+describe('getRidOfCommasInString', function() {
+	var getRidOfCommasInString = priceEstimation.getRidOfCommasInString;
+
+	it('should return a string', function() {
+		expect(getRidOfCommasInString('5,000.50')).to.be.a('string');
+	});
+
+	it('should return a string without commas', function() {
+		expect(getRidOfCommasInString('3,450.75')).to.equal('3450.75');
+	});
+});
+
+describe('formatNumberStringWithCommas', function() {
+	var formatNumberStringWithCommas = priceEstimation.formatNumberStringWithCommas;
+
+	it('should return a string', function() {
+		expect(formatNumberStringWithCommas('54000.30')).to.be.a('string');
+	})
+
+	it('should include commas where needed', function() {
+		expect(formatNumberStringWithCommas('3450.50')).to.equal('3,450.50');
+	})
+
+	it('should format a number string properly even if there are no decimals places given', function() {
+		expect(formatNumberStringWithCommas('3450')).to.equal('3,450');
+	})
 });
